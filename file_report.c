@@ -56,16 +56,51 @@ void null_dereference() {
 
 }
 
-int main() {
+int main(int argc, char *argv[]) {
+    if (argc < 2) {
+        printf("Please provide input for fuzzing.\n");
+        return 0;
+    }
+
+    const char *input = argv[1];  // Using char here instead of unsigned char
+    size_t len = strlen(input);
+    if (len < 1) {
+        printf("Input is too short to fuzz.\n");
+        return 0;
+    }
+
+    // Use the first byte of input to select a vulnerability
+    unsigned char selector = input[0] % 7;
+
     printf("Running vulnerable functions...\n");
 
-    buffer_overflow();
-    out_of_bounds_write();
-    out_of_bounds_read();
-    improper_array_index(7);
-    using_free_memory();
-    using_double_free_memory();
-    null_dereference();
+    // Trigger vulnerabilities based on the selected vulnerability
+    switch (selector) {
+        case 0:
+            buffer_overflow();
+            break;
+        case 1:
+            out_of_bounds_write();
+            break;
+        case 2:
+            out_of_bounds_read();
+            break;
+        case 3:
+            improper_array_index(7);
+            break;
+        case 4:
+            using_free_memory();
+            break;
+        case 5:
+            using_double_free_memory();
+            break;
+        case 6:
+            null_dereference();
+            break;
+        default:
+            printf("Invalid vulnerability selection.\n");
+            break;
+    }
 
     return 0;
 }
