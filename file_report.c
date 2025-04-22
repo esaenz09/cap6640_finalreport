@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
         return 0;
     }
 
-    const char *input = argv[1];  // Using char here instead of unsigned char
+    const char *input = argv[1]; 
     size_t len = strlen(input);
     if (len < 1) {
         printf("Input is too short to fuzz.\n");
