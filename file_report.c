@@ -76,31 +76,35 @@ int main(int argc, char *argv[]) {
 
     // Trigger vulnerabilities based on the selected vulnerability
     switch (selector) {
-        case 0:
-            buffer_overflow();
-            break;
-        case 1:
-            out_of_bounds_write();
-            break;
-        case 2:
-            out_of_bounds_read();
-            break;
-        case 3:
-            improper_array_index(7);
-            break;
-        case 4:
-            using_free_memory();
-            break;
-        case 5:
-            using_double_free_memory();
-            break;
-        case 6:
-            null_dereference();
-            break;
-        default:
-            printf("Invalid vulnerability selection.\n");
-            break;
-    }
+    case 0:
+        printf("Triggering buffer_overflow()\n");
+        buffer_overflow();
+        break;
+    case 1:
+        printf("Triggering out_of_bounds_write()\n");
+        out_of_bounds_write();
+        break;
+    case 2:
+        printf("Triggering out_of_bounds_read()\n");
+        out_of_bounds_read();
+        break;
+    case 3:
+        printf("Triggering improper_array_index()\n");
+        improper_array_index(7);
+        break;
+    case 4:
+        printf("Triggering use-after-free\n");
+        using_free_memory();
+        break;
+    case 5:
+        printf("Triggering double-free\n");
+        using_double_free_memory();
+        break;
+    case 6:
+        printf("Triggering null_dereference\n");
+        null_dereference();
+        break;
+}
 
     return 0;
 }
