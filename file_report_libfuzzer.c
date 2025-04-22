@@ -62,17 +62,40 @@ void null_dereference(const char *data, size_t dataSize) {
 // Fuzzer entry point for C code
 int LLVMFuzzerTestOneInput(const uint8_t *data, size_t len) {
     if (len < 1) return 0;  // Ensure there is some data
+    unsigned char selector = data[0] % 7;
 
     printf("Running vulnerable functions...\n");
 
-    // Call the vulnerable functions with the fuzzed input
-    buffer_overflow(data, len);
-    out_of_bounds_write(data, len);
-    out_of_bounds_read(data, len);
-    improper_array_index(data, len);
-    using_free_memory(data, len);
-    using_double_free_memory(data, len);
-    null_dereference(data, len);
-
+    // Trigger vulnerabilities based on the selected vulnerability
+    switch (selector) {
+    case 0:
+        printf("Triggering buffer_overflow()\n");
+        buffer_overflow(data, len);
+        break;
+    case 1:
+        printf("Triggering out_of_bounds_write()\n");
+        out_of_bounds_write(data, len);
+        break;
+    case 2:
+        printf("Triggering out_of_bounds_read()\n");
+        out_of_bounds_read(data, len);
+        break;
+    case 3:
+        printf("Triggering improper_array_index()\n");
+        improper_array_index(data, len);
+        break;
+    case 4:
+        printf("Triggering use-after-free\n");
+        using_free_memory(data, len);
+        break;
+    case 5:
+        printf("Triggering double-free\n");
+        using_double_free_memory(data, len);
+        break;
+    case 6:
+        printf("Triggering null_dereference\n");
+        null_dereference(data, len);
+        break;
+}
     return 0;
 }
